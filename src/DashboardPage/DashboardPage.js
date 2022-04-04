@@ -51,16 +51,17 @@ const tableIcons = {
 function DashboardPage() {
   const [user, setUser] = useState([]);
   const [reloadListing, setReloadListing] = useState(0)
-  useEffect(() => {
-    loadUser();
-  }, [])
+  
+  // useEffect(() => {
+  //   loadUser();
+  // }, [])
 
-  const loadUser = async () => {
-    const res = await axios.get("https://nodehostheroku.herokuapp.com/register")
-    setUser(res.data.data)
-    console.log("ressssss", res.data.data);
+  // const loadUser = async () => {
+  //   const res = await axios.get("https://nodehostheroku.herokuapp.com/register")
+  //   setUser(res.data.data)
+  //   console.log("ressssss", res.data.data);
 
-  }
+  // }
 
 
 
@@ -79,7 +80,7 @@ function DashboardPage() {
       .then(res => {
         if (res && res.status === 200) {
           toast.success('User Delete Successfully.')
-          loadUser()
+          // loadUser()
           setReloadListing(reloadListing + 1)
         }
       })
@@ -93,9 +94,26 @@ function DashboardPage() {
     console.log("idd", id);
 
   }
-
-  
-
+  const getPageWiseData = async (query)=>{
+    console.log("query",query);
+    let limit = query.pageSize
+    let resp = true
+    let count = 0;
+    let offset = query.page * query.pageSize
+    console.log("offsetoffsetoffsetoffset",offset);
+    console.log(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`);
+    const res = await axios.get(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`)
+    if(res?.data?.data){
+      console.log("res.datares.datares.datares.data",res.data);
+      count = res.data.count
+      resp = {
+        data: res.data.data,
+        page: query.page,
+        totalCount: count ? count : -1,
+      }
+    }
+    return resp
+  }
   return (
     <div>
       <Navbar />
@@ -108,7 +126,7 @@ function DashboardPage() {
             title='Person Data'
             columns={fieldLabel}
             // tableRef={tableRef}
-            data={user}
+            data={(query)=>getPageWiseData(query)}
             options={{
               filtering: true,
               paging: true,
@@ -116,6 +134,7 @@ function DashboardPage() {
               pageSize: 5,
               actionsColumnIndex: -1,
               pageSizeOptions: [10, 20, 30]
+            
             }}
             
             actions={[
@@ -137,8 +156,13 @@ function DashboardPage() {
                 icon: DeleteOutline,
                 tooltip: 'Delete',
                 onClick: (event, rowData) => {
+                  const confirmbox = window.confirm(
+                    "Do you want to delete this item?"
+                )
+                if (confirmbox === true) {
                   handleRemoveUser(rowData._id)
                 }
+              }
               }
             ]}
           />

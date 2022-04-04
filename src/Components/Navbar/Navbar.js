@@ -11,7 +11,6 @@ import {BiCategory} from 'react-icons/bi'
 
 function Navbar() {
   const loginStatus=  localStorage.getItem('Login') 
-  console.log("loginstatus",loginStatus);
 
     return (
         <div>

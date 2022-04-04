@@ -112,6 +112,7 @@ export default function MainPage () {
                     columns={fieldLabel}
                     // tableRef={tableRef}
                     data={userData}
+                    
                     options={{
                       filtering: true,
                       paging: true,
@@ -161,7 +162,7 @@ export default function MainPage () {
                 type='button'
                 color='secondary'
                 data-dismiss='modal'
-                onClick={e => setOpenModel(false)}
+                onClick={e => setOpenModel(true)}
               >
                 Close
               </Button>
