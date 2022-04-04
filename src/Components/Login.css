@@ -2,6 +2,17 @@ body {
     margin: 0;
 }
 
+.card {
+    margin-top: 200px !important;
+    background-color: white;
+    max-width: 680px;
+    width: 100%;
+    padding: 20px;
+    margin: auto;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
 .Login {
     padding: 15px;
     /* text-align: center; */
@@ -11,7 +22,7 @@ body {
 }
 
 .loginForm {
-    width: 50% !important;
+    width: 35% !important;
     height: 50%;
     background-color: #bfc2c736;
     padding: 50px 100px !important;

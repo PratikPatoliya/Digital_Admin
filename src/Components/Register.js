@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Link } from 'react-router-dom';
 
 const getdata = () => {
     const data = localStorage.getItem("obj");
@@ -13,7 +13,7 @@ const getdata = () => {
 
 
 function Register() {
-    const [user, setUser] = useState(getdata());
+    const [user, setUser] = useState(getdata())
     const [obj, setObj] = useState({
         _id: Math.random().toString().substr(4, 9),
         phoneNumber: "",
@@ -26,11 +26,6 @@ function Register() {
         confirmpassword: ""
     });
     const navigate = useNavigate()
-
-
-
-
-    console.log("user", user);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -77,14 +72,14 @@ function Register() {
             console.log("++++++++++++++++++++++++++++", obj);
             alert("Data Added Succesfully.!")
             setUser([...user, obj])
-            localStorage.setItem("obj", JSON.stringify(user))
-            navigate("/login")
+            // navigate("/login")
 
         }
     }
-    // useEffect(() => {
-    //     // getdata()
-    // }, [user])
+    useEffect(() => {
+        // getdata()
+        localStorage.setItem("obj", JSON.stringify(user))
+    }, [user])
 
 
     const changeHandler = (e) => {
@@ -140,7 +135,10 @@ function Register() {
                 <div className='d-flex justify-content-center align-items-center mt-4'>
                     <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Register</button>
                 </div>
-
+                <div className='d-flex justify-content-center mt-4'>
+                    <label >Already registerd ?</label>
+                    <Link to="/login">Login</Link>
+                </div>
 
             </form>
         </div>
