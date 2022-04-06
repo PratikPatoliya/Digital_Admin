@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useState, useEffect ,forwardRef} from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Check from '@material-ui/icons/Check'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
@@ -26,7 +26,7 @@ const tableIcons = {
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
     DetailPanel: forwardRef((props, ref) => (
-      <ChevronRight {...props} ref={ref} />
+        <ChevronRight {...props} ref={ref} />
     )),
     Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
@@ -35,7 +35,7 @@ const tableIcons = {
     LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
     NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
     PreviousPage: forwardRef((props, ref) => (
-      <ChevronLeft {...props} ref={ref} />
+        <ChevronLeft {...props} ref={ref} />
     )),
     ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
@@ -43,22 +43,22 @@ const tableIcons = {
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     VisibilityIcon: forwardRef((props, ref) => (
-      <VisibilityIcon {...props} ref={ref} />
+        <VisibilityIcon {...props} ref={ref} />
     ))
-  }
+}
 
 function Category() {
-    const [data,setData] = useState([])
+    const [data, setData] = useState([])
 
     useEffect(() => {
-        
+
         getData()
 
     }, []);
 
-    const getData = async() =>{
+    const getData = async () => {
         const result = await axios.get("https://nodehostheroku.herokuapp.com/category")
-        console.log("result",result);
+        console.log("result", result);
         setData(result.data)
 
     }
@@ -67,10 +67,10 @@ function Category() {
         { title: 'Category', field: 'category' },
         { title: 'Password', field: 'password' }
         // { title: 'Age', field: 'age' }
-      ]
+    ]
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <div className='container'>
                 <MuiThemeProvider /* theme={theme} */>
                     <MaterialTable

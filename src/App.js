@@ -11,6 +11,8 @@ import Home from './Components/Home';
 import DashboardPage from './DashboardPage/DashboardPage';
 import Logout from './Components/Logout';
 import Category from './Components/Category/Category';
+import EditUser from './DashboardPage/EditUser';
+import ViewData from './DashboardPage/ViewData';
 
 
 
@@ -34,6 +36,8 @@ function App() {
           <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/edit/:id" element={<EditUser />} />
+          <Route  path="/view/:id" element={<ViewData />} />
           {/* {loginStatus ? <Route path="/login" element={<Home />} /> : <Route path="/login" element={<Login />} />} */}
           <Route
             path="/dashboard"

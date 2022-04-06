@@ -1,4 +1,5 @@
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, forwardRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Components/Navbar/Navbar';
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
@@ -20,6 +21,8 @@ import { AddBox, EditRounded, } from '@material-ui/icons'
 import MaterialTable from 'material-table'
 import { MuiThemeProvider } from '@material-ui/core'
 import { ToastContainer, toast } from 'react-toastify';
+import DeleteModal from '../Components/common/DeleteModel';
+import EditUser from './EditUser';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -49,62 +52,78 @@ const tableIcons = {
 }
 
 function DashboardPage() {
-  const [user, setUser] = useState([]);
+  const [userIdToDelete, setUserIdToDelete] = useState()
   const [reloadListing, setReloadListing] = useState(0)
-  
-  // useEffect(() => {
-  //   loadUser();
-  // }, [])
-
-  // const loadUser = async () => {
-  //   const res = await axios.get("https://nodehostheroku.herokuapp.com/register")
-  //   setUser(res.data.data)
-  //   console.log("ressssss", res.data.data);
-
-  // }
-
-
-
+  const [showDeleteModal, setDeleteShowModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [isEdit, setIsEdit] = useState()
+  const navigate = useNavigate()
 
   const fieldLabel = [
     { title: 'Mobile No.', field: 'mobile_number' },
     { title: 'Password', field: 'password' }
   ]
 
+
   const handleRemoveUser = (id) => {
-    console.log("idddd", id);
-    const userRecord = user.filter(item => item._id !== id)
-    setUser(userRecord)
-    axios
-      .delete(`https://nodehostheroku.herokuapp.com/register/${id}`)
-      .then(res => {
-        if (res && res.status === 200) {
-          toast.success('User Delete Successfully.')
-          // loadUser()
-          setReloadListing(reloadListing + 1)
-        }
-      })
-      .catch(error => {
-        console.log('error', error)
-        toast.error('User Delete Successfully.')
-      })
+    setDeleteShowModal(true)
+    setUserIdToDelete(id);
   }
 
-  const handleShowDetails = (id) => {
-    console.log("idd", id);
+  const hideDeleteModal = () => {
+    setDeleteShowModal(false)
+    setUserIdToDelete("")
 
   }
-  const getPageWiseData = async (query)=>{
-    console.log("query",query);
+
+  const hideEditModal = () => {
+    setShowEditModal(false)
+
+  }
+  const removeData = () => {
+    if (userIdToDelete && userIdToDelete !== "") {
+      setDeleteShowModal(false)
+      axios
+        .delete(`https://nodehostheroku.herokuapp.com/register/${userIdToDelete}`)
+        .then(res => {
+          if (res && res.status === 200) {
+            setDeleteShowModal(false)
+            toast.success('User Delete Successfully.')
+            setReloadListing(reloadListing + 1)
+          }
+        })
+        .catch(error => {
+          console.log('error', error)
+          toast.error('Failed To Delete User , Error')
+        })
+    }
+  }
+
+  const handleShowDetails = (data) => {
+    return navigate(`/view/${data._id}`, { state: data })
+
+  }
+
+  const handleEditUser = (data) => {
+    setShowEditModal(true)
+    console.log("idddddddd", data._id);
+    setIsEdit({ id: data._id, state: data })
+    // return navigate(`/edit/${data._id}`,{state:data})
+  }
+
+
+
+  const getPageWiseData = async (query) => {
+    console.log("query", query);
     let limit = query.pageSize
     let resp = true
     let count = 0;
     let offset = query.page * query.pageSize
-    console.log("offsetoffsetoffsetoffset",offset);
+    console.log("offsetoffsetoffsetoffset", offset);
     console.log(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`);
     const res = await axios.get(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`)
-    if(res?.data?.data){
-      console.log("res.datares.datares.datares.data",res.data);
+    if (res?.data?.data) {
+      console.log("res.datares.datares.datares.data", res.data);
       count = res.data.count
       resp = {
         data: res.data.data,
@@ -117,6 +136,21 @@ function DashboardPage() {
   return (
     <div>
       <Navbar />
+      <DeleteModal
+        showDeleteModal={showDeleteModal}
+        onHide={hideDeleteModal}
+        clickedNo={hideDeleteModal}
+        clickedYes={removeData}
+      />
+      {isEdit &&
+        <EditUser
+          showEditModal={showEditModal}
+          onHide={hideEditModal}
+          isEdit={isEdit}
+
+        />
+      }
+
       <div className='container mt-3'>
         <ToastContainer />
         <MuiThemeProvider /* theme={theme} */>
@@ -125,44 +159,39 @@ function DashboardPage() {
             icons={tableIcons}
             title='Person Data'
             columns={fieldLabel}
-            // tableRef={tableRef}
-            data={(query)=>getPageWiseData(query)}
+            data={(query) => getPageWiseData(query)}
             options={{
               filtering: true,
               paging: true,
               paginationType: 'stepped',
-              pageSize: 5,
+              pageSize: 10,
               actionsColumnIndex: -1,
               pageSizeOptions: [10, 20, 30]
-            
+
             }}
-            
+
             actions={[
               {
                 icon: VisibilityIcon,
                 tooltip: 'View',
                 onClick: (event, rowData) => {
-                  handleShowDetails(rowData._id)
+                  handleShowDetails(rowData)
                 }
               },
               {
                 icon: EditRounded,
                 tooltip: 'Edit',
                 onClick: (event, rowData) => {
-                  handleShowDetails(rowData._id)
+                  console.log("rowData", rowData);
+                  handleEditUser(rowData)
                 }
               },
               {
                 icon: DeleteOutline,
                 tooltip: 'Delete',
                 onClick: (event, rowData) => {
-                  const confirmbox = window.confirm(
-                    "Do you want to delete this item?"
-                )
-                if (confirmbox === true) {
                   handleRemoveUser(rowData._id)
                 }
-              }
               }
             ]}
           />

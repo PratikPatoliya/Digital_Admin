@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useState ,useEffect} from 'react'
 import './Login.css'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,Navigate } from 'react-router-dom'
 import Navbar from './Navbar/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Login() {
+function Login() {  
     const [obj, setObj] = useState({
         phoneNumber: "",
         password: ""
