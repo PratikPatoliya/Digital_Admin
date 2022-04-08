@@ -1,13 +1,13 @@
-import { useState ,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import './Login.css'
 import axios from 'axios'
-import { useNavigate ,Navigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import Navbar from './Navbar/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Login() {  
+function Login() {
     const [obj, setObj] = useState({
         phoneNumber: "",
         password: ""
@@ -19,8 +19,8 @@ function Login() {
     const navigate = useNavigate()
     const [isLogin, setLogin] = useState(false);
     useEffect(() => {
-        const status  = JSON.parse(localStorage.getItem('Login'))
-        if(status){
+        const status = JSON.parse(localStorage.getItem('Login'))
+        if (status) {
             setLogin(true)
         }
     }, []);
@@ -29,7 +29,12 @@ function Login() {
         if (name === "phoneNumber" || name === "password") {
             value = parseInt(value) || ""
         }
-        setObj({...obj, [name]: value})
+        setObj({ ...obj, [name]: value })
+
+        setErrorMessage({
+            phoneNumber: '',
+            password: ''
+        })
     }
 
     const handleSubmit = (e) => {
@@ -51,10 +56,13 @@ function Login() {
             axios.post("https://nodehostheroku.herokuapp.com/register", header)
                 .then((res) => {
                     toast.error(res.data.message)
-                    // const auth = localStorage.getItem("Login");
                     console.log("++++++++++", res);
                     if (res?.data?.data[0]?.token) {
                         toast.success("Login Successfull");
+                        setObj({
+                            phoneNumber: '',
+                            password: ''
+                        })
                         localStorage.setItem('Login', JSON.stringify(res.data.data[0].token))
                         setTimeout(() => {
                             return navigate("/")
@@ -70,7 +78,7 @@ function Login() {
         })
     }
     console.log("errrrt", errorMessage);
-    if(isLogin){
+    if (isLogin) {
         return <Navigate to="/" />
     }
     return (
@@ -80,17 +88,17 @@ function Login() {
             <div className='card'>
                 <form>
                     <div className='d-flex justify-content-center mb-2'>
-                        <i style={{ fontSize: '25px' }}>Login</i>
+                        <i style={{ fontSize: '25px' , fontWeight : '600'}}>Login</i>
                     </div>
                     <div className="col-12 mb-1">
-                        <label>Phone Number : </label>
+                        <label className='title'>Phone Number : </label>
                         <input type="text" name='phoneNumber' value={obj.phoneNumber} onChange={handleChange} maxLength="10" />
                     </div>
                     <div className='mainError'>
                         {errorMessage.phoneNumber !== "" && <div className='errorMessage'>{errorMessage.phoneNumber}</div>}
                     </div>
                     <div className="col-12 mb-1">
-                        <label >Password :</label>
+                        <label className='title'>Password :</label>
                         <input type="password" name='password' value={obj.password} onChange={handleChange} />
                     </div>
 

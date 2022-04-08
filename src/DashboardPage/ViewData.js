@@ -1,33 +1,31 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { useParams, useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
+import './View.css'
 function ViewData() {
-    const { id } = useParams();
-    const navigate = useNavigate()
     const location = useLocation()
+    // const id = location.state._id
+    const name = location.state.username
+    const mobileNo = location.state.mobile_number
+    const displayImage = location.state.displayImage
     console.log("location", location);
+    console.log("displayImagedisplayImage", displayImage);
     return (
-
-        // <Link className="btn btn-primary" to="/">
-        //     back to Home
-        // </Link>
-
-
-        <div className="col-sm-12 my-5">
-            <div className="card shadow-sm w-100" style={{ minHeight: 500 }}>
-                <div className="card-body">
-                    <div>
-                        <img src={location.state.displayImage}></img>
-                        <div className='d-flex justify-content-center'>
-                            <h3><i>Mobile_Number:<h5>{location.state.mobile_number}</h5></i> </h3>
-                        </div>
-                    </div>
+        <div class="users-list-wrapper">
+            <div class="users-list">
+                {displayImage ?
+                    <div class="user-img">
+                        <img class="img rounded-img" src="displayImage" /></div> :
+                    <div class="user-img">
+                        <img class="img rounded-img" src="https://i.pinimg.com/736x/53/6a/1a/536a1adf40ac212182bdcdf403371ac7.jpg" /></div>
+                }
+                <div class="user-details">
+                    <h4 class="name"><i>UserName : </i><i style={{ fontSize: '20px', marginLeft: '15px' }}>{name}</i></h4>
+                    <hr />
+                    <h4 class="name"><i>Mobile No. : </i> <i style={{ fontSize: '20px', marginLeft: '15px' }}>{mobileNo}</i></h4>
                 </div>
             </div>
         </div>
-
     )
 }
 

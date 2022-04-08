@@ -19,6 +19,8 @@ import { AddBox } from '@material-ui/icons'
 import MaterialTable from 'material-table'
 import { MuiThemeProvider } from '@material-ui/core'
 import Navbar from '../Navbar/Navbar'
+import DeleteModal from '../common/DeleteModel'
+import { ToastContainer, toast } from 'react-toastify';
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -49,11 +51,14 @@ const tableIcons = {
 
 function Category() {
     const [data, setData] = useState([])
-
+    const [userIdToDelete, setUserIdToDelete] = useState("")
+    const [reloadListing, setReloadListing] = useState(0)
+    const [showDeleteModal, setDeleteShowModal] = useState(false)
+    const fieldLabel = [
+        { title: 'Category', field: 'category' },
+    ]
     useEffect(() => {
-
         getData()
-
     }, []);
 
     const getData = async () => {
@@ -63,21 +68,55 @@ function Category() {
 
     }
 
-    const fieldLabel = [
-        { title: 'Category', field: 'category' },
-        { title: 'Password', field: 'password' }
-        // { title: 'Age', field: 'age' }
-    ]
+    const handleRemoveUser = (id) => {
+        setDeleteShowModal(true)
+        setUserIdToDelete(id);
+    }
+
+    const hideDeleteModal = () => {
+        setDeleteShowModal(false)
+        setUserIdToDelete("")
+
+    }
+
+
+    const removeData = () => {
+        if (userIdToDelete && userIdToDelete !== "") {
+            setDeleteShowModal(false)
+            console.log("userIdToDelete", userIdToDelete);
+            axios
+                .delete(`https://nodehostheroku.herokuapp.com/category/${userIdToDelete}`)
+                .then(res => {
+                    if (res && res.status === 200) {
+                        setDeleteShowModal(false)
+                        toast.success('User Delete Successfully.')
+                        setReloadListing(reloadListing + 1)
+                    }
+                })
+                .catch(error => {
+                    console.log('error', error)
+                    toast.error('Failed To Delete User , Error')
+                })
+        }
+    }
+
+
     return (
         <div>
             <Navbar />
-            <div className='container'>
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onHide={hideDeleteModal}
+                clickedNo={hideDeleteModal}
+                clickedYes={removeData}
+            />
+            <div className='container mt-3'>
+                <ToastContainer />
                 <MuiThemeProvider /* theme={theme} */>
                     <MaterialTable
                         icons={tableIcons}
-                        title='Person Data'
+                        title='category'
                         columns={fieldLabel}
-                        // tableRef={tableRef}
                         data={data}
                         options={{
                             filtering: true,
@@ -88,18 +127,18 @@ function Category() {
                             pageSizeOptions: [10, 20, 30]
                         }}
                         actions={[
-                            {
-                                icon: VisibilityIcon,
-                                tooltip: 'View',
-                                onClick: (event, rowData) => {
-                                    // handleShowDetails(rowData.id)
-                                }
-                            },
+                            // {
+                            //     icon: VisibilityIcon,
+                            //     tooltip: 'View',
+                            //     onClick: (event, rowData) => {
+                            //         // handleShowDetails(rowData.id)
+                            //     }
+                            // },
                             {
                                 icon: DeleteOutline,
                                 tooltip: 'Delete',
                                 onClick: (event, rowData) => {
-                                    // handleRemoveUser(rowData.id)
+                                    handleRemoveUser(rowData._id)
                                 }
                             }
                         ]}

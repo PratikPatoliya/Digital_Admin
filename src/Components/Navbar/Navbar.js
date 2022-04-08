@@ -4,13 +4,13 @@ import { FaHome } from "react-icons/fa";
 import { IoMdContact } from "react-icons/io";
 import { AiFillDashboard } from 'react-icons/ai';
 import logo from '../assets/images/logo.jpg'
-import {BiCategory} from 'react-icons/bi'
+import { BiCategory, BiLogIn, BiLogOut } from 'react-icons/bi'
 
 
 
 
 function Navbar() {
-  const loginStatus=  localStorage.getItem('Login') 
+    const loginStatus = localStorage.getItem('Login')
 
     return (
         <div>
@@ -40,12 +40,12 @@ function Navbar() {
                     </li>
                 </ul>
                 {
-                 loginStatus  ?
+                    loginStatus ?
                         <div id="nlist">
                             <li className="dropdown">
                                 <NavLink className="active_class mx-5" to={"/logout"} ><IoMdContact /></NavLink>
                                 <div className="dropdown-content" style={{ float: "right" }}>
-                                    <NavLink className="active_class" to="/logout" >Logout</NavLink>
+                                    <NavLink className="active_class" to="/logout" >{<BiLogIn />} Logout</NavLink>
                                 </div>
                             </li>
                         </div> :
@@ -53,7 +53,7 @@ function Navbar() {
                             <li className="dropdown">
                                 <NavLink className="active_class mx-5" to={"/login"} ><IoMdContact /></NavLink>
                                 <div className="dropdown-content" style={{ float: "right" }}>
-                                    <NavLink to="/login" className="active_class">Login</NavLink>
+                                    <NavLink to="/login" className="active_class">{<BiLogIn />} Login</NavLink>
                                 </div>
                             </li>
                         </div>

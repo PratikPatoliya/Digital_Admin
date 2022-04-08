@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import PrivateRoute from './Components/PrivateRoute';
 import Home from './Components/Home';
 import DashboardPage from './DashboardPage/DashboardPage';
@@ -14,52 +14,21 @@ import Category from './Components/Category/Category';
 import EditUser from './DashboardPage/EditUser';
 import ViewData from './DashboardPage/ViewData';
 
-
-
 function App() {
-  const [loginStatus,setLoginStatus] = useState(false)
 
-  useEffect(() => {
-    const status = JSON.parse(localStorage.getItem("Login"))
-    if(status){
-      setLoginStatus(true)
-    }else{
-      setLoginStatus(false)
-    }
-  }, []);
- 
   return (
     <div>
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/edit/:id" element={<EditUser />} />
-          <Route  path="/view/:id" element={<ViewData />} />
-          {/* {loginStatus ? <Route path="/login" element={<Home />} /> : <Route path="/login" element={<Login />} />} */}
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <DashboardPage />
-              </PrivateRoute>
-            }
-          />
-           <Route
-            path="/category"
-            element={
-              <PrivateRoute>
-                <Category />
-              </PrivateRoute>
-            }
-          />
-
-          
+          <Route path="/view/:id" element={<ViewData />} />
+          <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+          <Route path="/category" element={<PrivateRoute>  <Category /> </PrivateRoute>} />
         </Routes>
       </BrowserRouter>
-
     </div>
 
   );

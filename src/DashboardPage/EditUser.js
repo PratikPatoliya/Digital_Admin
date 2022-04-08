@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react'
 import Modal from "react-bootstrap/Modal";
 import '../Components/Login.css'
-import { ModalHeader, ModalBody, Button, ModalFooter } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from 'axios'
-import { useNavigate, Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-
-const EditUser = props => {
+const EditUser = (props) => {
+    const { editData, setEditData } = props
     const [obj, setObj] = useState({
         phoneNumber: "",
         password: ""
     })
-    const id = props.isEdit.state._id
+    const id = editData.state._id
     console.log("props++", id);
-    const navigate = useNavigate()
-
 
     const handleChange = (e) => {
         let { name, value } = e.target
@@ -26,19 +23,23 @@ const EditUser = props => {
     }
 
     const handleSubmit = () => {
-        let header = { mobile_number: obj.phoneNumber, password: obj.password }
-        axios.put(`https://nodehostheroku.herokuapp.com/register/${id}`, header)
-            .then((res) => {
-                toast.error(res.data.message)
-                console.log("++++++++++", res.data);
-                if (res?.data) {
-                    toast.success("Edit Data Successfully");
+        if(obj.phoneNumber !== "" && obj.password !== ""){
+            let header = { mobile_number: obj.phoneNumber, password: obj.password }
+            axios.put(`https://nodehostheroku.herokuapp.com/register/${id}`, header)
+                .then((res) => {
+                    toast.error(res.data.message)
+                    console.log("++++++++++", res);
+                    if (res.data.mobile_number && res.data.password) {
+                        toast.success("Edit Data Successfully");
+                        setEditData('')
+                    }
                 }
-            }
-            )
+                )
+        }else{
+            toast.error("Please Enter Data")
+        }
+
     }
-
-
 
     useEffect(() => {
         console.log("props", props);
@@ -46,30 +47,34 @@ const EditUser = props => {
     }, [props]);
 
     const loadUser = () => {
-        setObj({ phoneNumber: props.isEdit.state.mobile_number, password: props.isEdit.state.password })
-
+        setObj({ phoneNumber: props.editData.state.mobile_number, password: props.editData.state.password })
     }
 
     return (
         <div>
-
-            <Modal show={props.showEditModal} onHide={props.onHide} style={{ opacity: 1 }} dialogClassName="my-dialog"  >
-                <ModalHeader closeButton>
-                    <Modal.Title><i>EditUSer Form</i></Modal.Title>
-                </ModalHeader>
-
-                <ModalBody className="modal-body">
-                    <label>Phone Number:</label>
-                    <input type="text" name='phoneNumber' value={obj.phoneNumber} onChange={handleChange} maxLength="10" />
-                    <label>Password:</label>
-                    <input type="password" value={obj.password} onChange={handleChange} name='password' />
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button type="button" color="primary" onClick={handleSubmit} onHide={props.onHide}>Save Changes</Button>
-                </ModalFooter>
-            </Modal>
-        </div>
+            <Modal show={props.showEditModal} /* style={{ opacity: 1 }} */ dialogClassName="my-dialog"  >
+                <div className='close p-2'>
+                    <button type="button" class="btn-close" aria-label="Close" onClick={(e) => setEditData('')}></button>
+                </div>
+                <div className='row editUser'>
+                    <div className='col-12 mainClass m-1'>
+                        <h3><i>EditUSer Form</i></h3>
+                    </div>
+                    <div className="col-12 m-1">
+                        <label className='title'>Phone Number : </label>
+                        <input type="text" name='phoneNumber' value={obj.phoneNumber} onChange={handleChange} maxLength="10" />
+                    </div>
+                    <div className="col-12 m-1 mb-3">
+                        <label className='title'>Password :</label>
+                        <input type="password" name='password' value={obj.password} onChange={handleChange} />
+                    </div>
+                    <div className="col-12 m-1 mainClass">
+                        <Button type="button" variant="secondary" onClick={(e) => setEditData('')} style={{ marginRight: '5px' }}>Cancel</Button>
+                        <Button type="button" variant="success" onClick={handleSubmit} style={{ marginLeft: '5px' }}>Submit</Button>
+                    </div>
+                </div>
+            </Modal >
+        </div >
     )
 }
 

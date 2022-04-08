@@ -34,3 +34,60 @@ input {
     height: 37px;
     font-size: 15px !important;
 }
+
+.editUser {
+    height: 350px;
+    width: 100%;
+    padding: 30px;
+}
+
+.mainClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.close {
+    display: flex;
+    justify-content: end;
+}
+
+.btn {
+    display: flex;
+    justify-content: end;
+}
+
+
+/*   
+    &:after, &:before {
+      
+      content:"";
+      height:20px;
+      width:20px;
+      border-top:1px solid #000;
+      position:absolute;
+      top:7px;
+      right:-8px;
+      @include rotate(-45deg);
+    
+    }
+        
+    &:before {
+          
+      right:6px;
+      @include rotate(45deg);
+    
+    }
+    
+    &:hover {
+           
+      @include opacity(0.3);
+      
+    }
+    
+  } */

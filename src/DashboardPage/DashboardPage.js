@@ -56,10 +56,11 @@ function DashboardPage() {
   const [reloadListing, setReloadListing] = useState(0)
   const [showDeleteModal, setDeleteShowModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
-  const [isEdit, setIsEdit] = useState()
+  const [isEdit, setIsEdit] = useState('')
   const navigate = useNavigate()
 
   const fieldLabel = [
+    { title: 'UserName.', field: 'username' },
     { title: 'Mobile No.', field: 'mobile_number' },
     { title: 'Password', field: 'password' }
   ]
@@ -73,16 +74,12 @@ function DashboardPage() {
   const hideDeleteModal = () => {
     setDeleteShowModal(false)
     setUserIdToDelete("")
-
   }
 
-  const hideEditModal = () => {
-    setShowEditModal(false)
 
-  }
   const removeData = () => {
     if (userIdToDelete && userIdToDelete !== "") {
-      setDeleteShowModal(false)
+      setUserIdToDelete("")
       axios
         .delete(`https://nodehostheroku.herokuapp.com/register/${userIdToDelete}`)
         .then(res => {
@@ -101,7 +98,6 @@ function DashboardPage() {
 
   const handleShowDetails = (data) => {
     return navigate(`/view/${data._id}`, { state: data })
-
   }
 
   const handleEditUser = (data) => {
@@ -110,8 +106,6 @@ function DashboardPage() {
     setIsEdit({ id: data._id, state: data })
     // return navigate(`/edit/${data._id}`,{state:data})
   }
-
-
 
   const getPageWiseData = async (query) => {
     console.log("query", query);
@@ -131,6 +125,7 @@ function DashboardPage() {
         totalCount: count ? count : -1,
       }
     }
+    console.log("ressss", resp);
     return resp
   }
   return (
@@ -145,9 +140,8 @@ function DashboardPage() {
       {isEdit &&
         <EditUser
           showEditModal={showEditModal}
-          onHide={hideEditModal}
-          isEdit={isEdit}
-
+          editData={isEdit}
+          setEditData={setIsEdit}
         />
       }
 
@@ -167,7 +161,6 @@ function DashboardPage() {
               pageSize: 10,
               actionsColumnIndex: -1,
               pageSizeOptions: [10, 20, 30]
-
             }}
 
             actions={[
