@@ -162,7 +162,6 @@ function DashboardPage() {
               actionsColumnIndex: -1,
               pageSizeOptions: [10, 20, 30]
             }}
-
             actions={[
               {
                 icon: VisibilityIcon,
