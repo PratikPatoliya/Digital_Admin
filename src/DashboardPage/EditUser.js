@@ -70,7 +70,7 @@ const EditUser = (props) => {
                     </div>
                     <div className="col-12 m-1 mainClass">
                         <Button type="button" variant="secondary" onClick={(e) => setEditData('')} style={{ marginRight: '5px' }}>Cancel</Button>
-                        <Button type="button" variant="success" onClick={handleSubmit} style={{ marginLeft: '5px' }}>Submit</Button>
+                        <Button type="button" variant="success" onClick={(e)=> handleSubmit(e)} style={{ marginLeft: '5px' }}>Submit</Button>
                     </div>
                 </div>
             </Modal >

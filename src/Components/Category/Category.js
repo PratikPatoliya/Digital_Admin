@@ -82,7 +82,7 @@ function Category() {
 
     const removeData = () => {
         if (userIdToDelete && userIdToDelete !== "") {
-            setDeleteShowModal(false)
+            setUserIdToDelete("")
             console.log("userIdToDelete", userIdToDelete);
             axios
                 .delete(`https://nodehostheroku.herokuapp.com/category/${userIdToDelete}`)
@@ -91,6 +91,7 @@ function Category() {
                         setDeleteShowModal(false)
                         toast.success('User Delete Successfully.')
                         setReloadListing(reloadListing + 1)
+                        getData()
                     }
                 })
                 .catch(error => {
