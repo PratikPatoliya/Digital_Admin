@@ -4,6 +4,7 @@ import '../Components/Login.css'
 import { Button } from 'react-bootstrap';
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import { URL } from '../Components/config/Config';
 
 const EditUser = (props) => {
     const { editData, setEditData } = props
@@ -22,10 +23,11 @@ const EditUser = (props) => {
         setObj({ ...obj, [name]: value })
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         if(obj.phoneNumber !== "" && obj.password !== ""){
             let header = { mobile_number: obj.phoneNumber, password: obj.password }
-            axios.put(`https://nodehostheroku.herokuapp.com/register/${id}`, header)
+            try {
+               await axios.put(`${URL}/${id}`, header)
                 .then((res) => {
                     toast.error(res.data.message)
                     console.log("++++++++++", res);
@@ -35,6 +37,9 @@ const EditUser = (props) => {
                     }
                 }
                 )
+            } catch (error) {
+                console.log("+++++++++error",error);
+            }
         }else{
             toast.error("Please Enter Data")
         }

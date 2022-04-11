@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useNavigate, Navigate } from 'react-router-dom'
 import Navbar from './Navbar/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
+import { URL } from './config/Config'
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -53,7 +54,7 @@ function Login() {
         }
         if (flag) {
             let header = { mobile_number: obj.phoneNumber, password: obj.password }
-            axios.post("https://nodehostheroku.herokuapp.com/register", header)
+            axios.post(URL, header)
                 .then((res) => {
                     toast.error(res.data.message)
                     console.log("++++++++++", res);
