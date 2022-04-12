@@ -107,7 +107,7 @@ function Login() {
                         {errorMessage.password !== "" && <div className='errorMessage'>{errorMessage.password}</div>}
                     </div>
                     <div className='d-flex justify-content-center mt-4'>
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Sign in</button>
                     </div>
 
                 </form>

@@ -22,6 +22,7 @@ import { MuiThemeProvider } from '@material-ui/core'
 import Navbar from '../Navbar/Navbar'
 import DeleteModal from '../common/DeleteModel'
 import { ToastContainer, toast } from 'react-toastify';
+import { API } from '../config/Config'
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -63,7 +64,7 @@ function Category() {
     }, []);
 
     const getData = async () => {
-        const result = await axios.get("https://nodehostheroku.herokuapp.com/category")
+        const result = await axios.get(API)
         console.log("result", result);
         setData(result.data)
 
@@ -86,7 +87,7 @@ function Category() {
             setUserIdToDelete("")
             console.log("userIdToDelete", userIdToDelete);
             axios
-                .delete(`https://nodehostheroku.herokuapp.com/category/${userIdToDelete}`)
+                .delete(`${API}/${userIdToDelete}`)
                 .then(res => {
                     if (res && res.status === 200) {
                         setDeleteShowModal(false)
@@ -106,11 +107,11 @@ function Category() {
     return (
         <div>
             <Navbar />
-            <div className='displayCard' style={{ width: "100%" }}>
+            <div className='displayCard'>
                 <div className='cardTitle'>
                     <Link to="/addcategory">
                         <button
-                            style={{ float: "right", margin: "20px", marginRight: "100px" }}
+                            style={{ float: "right", margin: "20px" , marginRight:"8vh"}}
                             title="Add Category"
                             className="btn btn-success"
                         >Add Category</button>
@@ -122,7 +123,7 @@ function Category() {
                     clickedNo={hideDeleteModal}
                     clickedYes={removeData}
                 />
-                <div className='container  mt-3' style={{ width: '100%' }}>
+                <div className='container mt-2' style={{ width: '100%' }}>
 
                     <ToastContainer />
                     <MuiThemeProvider /* theme={theme} */>
