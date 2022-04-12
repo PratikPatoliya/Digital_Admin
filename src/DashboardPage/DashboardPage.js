@@ -145,7 +145,7 @@ function DashboardPage() {
         />
       }
 
-      <div className='container mt-3'>
+      <div className='container' style={{ marginTop: '60px' }}>
         <ToastContainer />
         <MuiThemeProvider /* theme={theme} */>
           <MaterialTable

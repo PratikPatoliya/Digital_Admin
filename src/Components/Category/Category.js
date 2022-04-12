@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useState, useEffect, forwardRef } from 'react'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
@@ -89,7 +90,7 @@ function Category() {
                 .then(res => {
                     if (res && res.status === 200) {
                         setDeleteShowModal(false)
-                        toast.success('User Delete Successfully.')
+                        toast.success('Category Delete Successfully.')
                         setReloadListing(reloadListing + 1)
                         getData()
                     }
@@ -105,49 +106,66 @@ function Category() {
     return (
         <div>
             <Navbar />
-            <DeleteModal
-                showDeleteModal={showDeleteModal}
-                onHide={hideDeleteModal}
-                clickedNo={hideDeleteModal}
-                clickedYes={removeData}
-            />
-            <div className='container mt-3'>
-                <ToastContainer />
-                <MuiThemeProvider /* theme={theme} */>
-                    <MaterialTable
-                        icons={tableIcons}
-                        title='category'
-                        columns={fieldLabel}
-                        data={data}
-                        options={{
-                            filtering: true,
-                            paging: true,
-                            paginationType: 'stepped',
-                            pageSize: 10,
-                            actionsColumnIndex: -1,
-                            pageSizeOptions: [10, 20, 30]
-                        }}
-                        actions={[
-                            // {
-                            //     icon: VisibilityIcon,
-                            //     tooltip: 'View',
-                            //     onClick: (event, rowData) => {
-                            //         // handleShowDetails(rowData.id)
-                            //     }
-                            // },
-                            {
-                                icon: DeleteOutline,
-                                tooltip: 'Delete',
-                                onClick: (event, rowData) => {
-                                    handleRemoveUser(rowData._id)
+            <div className='displayCard' style={{ width: "100%" }}>
+                <div className='cardTitle'>
+                    <Link to="/addcategory">
+                        <button
+                            style={{ float: "right", margin: "20px", marginRight: "100px" }}
+                            title="Add Category"
+                            className="btn btn-success"
+                        >Add Category</button>
+                    </Link>
+                </div>
+                <DeleteModal
+                    showDeleteModal={showDeleteModal}
+                    onHide={hideDeleteModal}
+                    clickedNo={hideDeleteModal}
+                    clickedYes={removeData}
+                />
+                <div className='container  mt-3' style={{ width: '100%' }}>
+
+                    <ToastContainer />
+                    <MuiThemeProvider /* theme={theme} */>
+                        <MaterialTable
+                            icons={tableIcons}
+                            title='category'
+                            columns={fieldLabel}
+                            data={data}
+                            options={{
+                                filtering: true,
+                                paging: true,
+                                paginationType: 'stepped',
+                                pageSize: 10,
+                                actionsColumnIndex: -1,
+                                pageSizeOptions: [10, 20, 30]
+                            }}
+                            actions={[
+                                // {
+                                //     icon: VisibilityIcon,
+                                //     tooltip: 'View',
+                                //     onClick: (event, rowData) => {
+                                //         // handleShowDetails(rowData.id)
+                                //     }
+                                // },
+                                {
+                                    icon: DeleteOutline,
+                                    tooltip: 'Delete',
+                                    onClick: (event, rowData) => {
+                                        handleRemoveUser(rowData._id)
+                                    }
                                 }
-                            }
-                        ]}
-                    />
-                </MuiThemeProvider>
+                            ]}
+                        />
+                    </MuiThemeProvider>
+
+                </div>
 
             </div>
+
         </div>
+
+
+
     )
 }
 

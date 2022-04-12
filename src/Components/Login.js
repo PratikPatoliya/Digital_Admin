@@ -89,7 +89,7 @@ function Login() {
             <div className='card'>
                 <form>
                     <div className='d-flex justify-content-center mb-2'>
-                        <i style={{ fontSize: '25px' , fontWeight : '600'}}>Login</i>
+                        <i style={{ fontSize: '25px', fontWeight: '600' }}>Login</i>
                     </div>
                     <div className="col-12 mb-1">
                         <label className='title'>Phone Number : </label>
