@@ -54,8 +54,9 @@ function Login() {
         }
         if (flag) {
             let header = { mobile_number: obj.phoneNumber, password: obj.password }
-            axios.post(URL, header)
+            axios.post(`${URL}/register`, header)
                 .then((res) => {
+                    console.log("responseeee", res.headers);
                     toast.error(res.data.message)
                     console.log("++++++++++", res);
                     if (res?.data?.data[0]?.token) {
@@ -71,7 +72,6 @@ function Login() {
                     }
                 }
                 )
-
         }
         setErrorMessage({
             phoneNumber: phoneNumberError,

@@ -111,7 +111,7 @@ function Category() {
                 <div className='cardTitle'>
                     <Link to="/addcategory">
                         <button
-                            style={{ float: "right", margin: "20px" , marginRight:"8vh"}}
+                            style={{ float: "right", margin: "20px", marginRight: "8vh" }}
                             title="Add Category"
                             className="btn btn-success"
                         >Add Category</button>

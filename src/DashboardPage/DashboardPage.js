@@ -47,25 +47,24 @@ const tableIcons = {
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-  VisibilityIcon: forwardRef((props, ref) => (
-    <VisibilityIcon {...props} ref={ref} />
-  ))
+  VisibilityIcon: forwardRef((props, ref) => (<VisibilityIcon {...props} ref={ref} />))
 }
 
 function DashboardPage() {
-  const [userIdToDelete, setUserIdToDelete] = useState()
+  const [userIdToDelete, setUserIdToDelete] = useState("")
   const [reloadListing, setReloadListing] = useState(0)
   const [showDeleteModal, setDeleteShowModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [isEdit, setIsEdit] = useState('')
   const navigate = useNavigate()
+  let token = JSON.parse(localStorage.getItem('Login'))
+  console.log("token", token);
 
   const fieldLabel = [
     { title: 'UserName.', field: 'username' },
     { title: 'Mobile No.', field: 'mobile_number' },
     { title: 'Password', field: 'password' }
   ]
-
 
   const handleRemoveUser = (id) => {
     setDeleteShowModal(true)
@@ -77,12 +76,11 @@ function DashboardPage() {
     setUserIdToDelete("")
   }
 
-
   const removeData = () => {
     if (userIdToDelete && userIdToDelete !== "") {
       setUserIdToDelete("")
       axios
-        .delete(`${URL}/${userIdToDelete}`)
+        .delete(`${URL}/register/${userIdToDelete}`)
         .then(res => {
           if (res && res.status === 200) {
             setDeleteShowModal(false)
@@ -113,11 +111,15 @@ function DashboardPage() {
     let resp = true
     let count = 0;
     let offset = query.page * query.pageSize
-    console.log("offsetoffsetoffsetoffset", offset);
+    let header = {}
     console.log(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`);
-    const res = await axios.get(`${URL}?limit=${limit}&offset=${offset}`)
+    const res = await axios.get(`${URL}/register?limit=${limit}&offset=${offset}`, {
+      headers: {
+        'x-access-token': token
+      }
+    })
+    console.log("ressss", res);
     if (res?.data?.data) {
-      console.log("res.datares.datares.datares.data", res.data);
       count = res.data.count
       resp = {
         data: res.data.data,
@@ -188,8 +190,6 @@ function DashboardPage() {
             ]}
           />
         </MuiThemeProvider>
-
-
       </div>
     </div>
   )
