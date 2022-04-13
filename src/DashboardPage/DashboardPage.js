@@ -72,8 +72,8 @@ function DashboardPage() {
   }
 
   const hideDeleteModal = () => {
-    setDeleteShowModal(false)
     setUserIdToDelete("")
+    setDeleteShowModal(false)
   }
 
   const removeData = () => {
@@ -112,7 +112,7 @@ function DashboardPage() {
     let count = 0;
     let offset = query.page * query.pageSize
     let header = {}
-    console.log(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`);
+    // console.log(`https://nodehostheroku.herokuapp.com/register?limit=${limit}&offset=${offset}`);
     const res = await axios.get(`${URL}/register?limit=${limit}&offset=${offset}`, {
       headers: {
         'x-access-token': token
@@ -133,63 +133,64 @@ function DashboardPage() {
   return (
     <div>
       <Navbar />
-      <DeleteModal
-        showDeleteModal={showDeleteModal}
-        onHide={hideDeleteModal}
-        clickedNo={hideDeleteModal}
-        clickedYes={removeData}
-      />
-      {isEdit &&
-        <EditUser
-          showEditModal={showEditModal}
-          editData={isEdit}
-          setEditData={setIsEdit}
+      <div className='displayCard'>
+        <DeleteModal
+          showDeleteModal={showDeleteModal}
+          onHide={hideDeleteModal}
+          clickedNo={hideDeleteModal}
+          clickedYes={removeData}
         />
-      }
-
-      <div className='container' style={{ marginTop: '60px' }}>
-        <ToastContainer />
-        <MuiThemeProvider /* theme={theme} */>
-          <MaterialTable
-            key={reloadListing}
-            icons={tableIcons}
-            title='Person Data'
-            columns={fieldLabel}
-            data={(query) => getPageWiseData(query)}
-            options={{
-              filtering: true,
-              paging: true,
-              paginationType: 'stepped',
-              pageSize: 10,
-              actionsColumnIndex: -1,
-              pageSizeOptions: [10, 20, 30]
-            }}
-            actions={[
-              {
-                icon: VisibilityIcon,
-                tooltip: 'View',
-                onClick: (event, rowData) => {
-                  handleShowDetails(rowData)
-                }
-              },
-              {
-                icon: EditRounded,
-                tooltip: 'Edit',
-                onClick: (event, rowData) => {
-                  console.log("rowData", rowData);
-                  handleEditUser(rowData)
-                }
-              },
-              {
-                icon: DeleteOutline,
-                tooltip: 'Delete',
-                onClick: (event, rowData) => {
-                  handleRemoveUser(rowData._id)
-                }
-              }
-            ]}
+        {isEdit &&
+          <EditUser
+            showEditModal={showEditModal}
+            editData={isEdit}
+            setEditData={setIsEdit}
           />
-        </MuiThemeProvider>
+        }
+        <div className='container' style={{ marginTop: '60px' }}>
+          <ToastContainer />
+          <MuiThemeProvider /* theme={theme} */>
+            <MaterialTable
+              key={reloadListing}
+              icons={tableIcons}
+              title='Person Data'
+              columns={fieldLabel}
+              data={(query) => getPageWiseData(query)}
+              options={{
+                filtering: true,
+                paging: true,
+                paginationType: 'stepped',
+                pageSize: 10,
+                actionsColumnIndex: -1,
+                pageSizeOptions: [10, 20, 30]
+              }}
+              actions={[
+                {
+                  icon: VisibilityIcon,
+                  tooltip: 'View',
+                  onClick: (event, rowData) => {
+                    handleShowDetails(rowData)
+                  }
+                },
+                {
+                  icon: EditRounded,
+                  tooltip: 'Edit',
+                  onClick: (event, rowData) => {
+                    console.log("rowData", rowData);
+                    handleEditUser(rowData)
+                  }
+                },
+                {
+                  icon: DeleteOutline,
+                  tooltip: 'Delete',
+                  onClick: (event, rowData) => {
+                    handleRemoveUser(rowData._id)
+                  }
+                }
+              ]}
+            />
+          </MuiThemeProvider>
+        </div>
       </div>
     </div>
   )

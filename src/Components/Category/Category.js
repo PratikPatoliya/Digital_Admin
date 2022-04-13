@@ -81,7 +81,6 @@ function Category() {
 
     }
 
-
     const removeData = () => {
         if (userIdToDelete && userIdToDelete !== "") {
             setUserIdToDelete("")
@@ -102,7 +101,6 @@ function Category() {
                 })
         }
     }
-
 
     return (
         <div>

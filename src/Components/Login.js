@@ -19,11 +19,13 @@ function Login() {
     })
     const navigate = useNavigate()
     const [isLogin, setLogin] = useState(false);
+
     useEffect(() => {
         const status = JSON.parse(localStorage.getItem('Login'))
         if (status) {
             setLogin(true)
         }
+
     }, []);
     const handleChange = (e) => {
         let { name, value } = e.target
